@@ -6,7 +6,7 @@ import { Button } from '../components/Button';
 
 export const Contact: React.FC = () => {
   return (
-    <div className="bg-gray-50 min-h-screen">
+    <div className="bg-gray-50 min-h-screen pt-20">
       <div className="bg-mw-dark text-white py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <h1 className="text-4xl font-bold mb-4">Kontaktujte nás</h1>

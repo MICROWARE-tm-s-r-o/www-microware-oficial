@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Menu, X, ShoppingCart } from 'lucide-react';
-import { COMPANY_INFO, ESHOP_URL, LOGO_IMAGE_URL } from '../constants';
+import { ESHOP_URL, LOGO_IMAGE_URL } from '../constants';
 
 export const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
-  const isHomePage = location.pathname === '/';
 
   const toggleMenu = () => setIsOpen(!isOpen);
 
@@ -20,26 +19,18 @@ export const Navbar: React.FC = () => {
   const isActive = (path: string) => location.pathname === path;
 
   return (
-    <nav className="bg-white border-b border-gray-200 sticky top-0 z-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between h-20">
+    <nav className="fixed w-full top-0 z-50 bg-white border-b border-gray-200 shadow-sm h-24 md:h-20 transition-all">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full">
+        <div className="flex justify-between items-center h-full">
           {/* Logo Area */}
-          <div className="flex-shrink-0 flex items-center">
-            <Link to="/" className="flex items-center gap-2">
-              {isHomePage ? (
-                /* Image Logo ONLY on Home Page */
-                <img 
-                  src={LOGO_IMAGE_URL} 
-                  alt="MICROWARE" 
-                  className="h-12 w-auto object-contain"
-                />
-              ) : (
-                /* Text Logo on other pages */
-                <div className="font-bold text-2xl tracking-tighter text-mw-blue">
-                  MICRO<span className="text-mw-red">WARE</span>
-                  <span className="text-xs text-gray-400 font-normal align-top ml-1">TM</span>
-                </div>
-              )}
+          <div className="flex-shrink-0 flex items-center pt-2 md:pt-0">
+            <Link to="/" className="flex items-center gap-2 group">
+              {/* Pouze obrázkové logo. Soubor logo.png musí být nahrán v rootu projektu. */}
+              <img 
+                src={LOGO_IMAGE_URL} 
+                alt="MICROWARE" 
+                className="h-12 md:h-16 w-auto object-contain"
+              />
             </Link>
           </div>
 
@@ -49,13 +40,13 @@ export const Navbar: React.FC = () => {
               <Link
                 key={link.path}
                 to={link.path}
-                className={`text-sm font-medium transition-colors duration-200 ${
+                className={`text-sm font-bold tracking-wide transition-colors duration-200 ${
                   isActive(link.path) 
                     ? 'text-mw-orange' 
                     : 'text-gray-600 hover:text-mw-blue'
                 }`}
               >
-                {link.name}
+                {link.name.toUpperCase()}
               </Link>
             ))}
             
@@ -63,9 +54,9 @@ export const Navbar: React.FC = () => {
               href={ESHOP_URL} 
               target="_blank" 
               rel="noopener noreferrer"
-              className="flex items-center gap-2 bg-mw-dark text-white px-4 py-2 rounded hover:bg-mw-blue transition-colors text-sm font-medium"
+              className="flex items-center gap-2 px-5 py-2.5 rounded-full transition-all duration-300 text-sm font-bold shadow-sm hover:shadow-md transform hover:-translate-y-0.5 bg-mw-dark text-white hover:bg-mw-blue"
             >
-              <ShoppingCart className="w-4 h-4" /> E-shop
+              <ShoppingCart className="w-4 h-4" /> <span className="hidden lg:inline">E-SHOP</span>
             </a>
           </div>
 
@@ -73,7 +64,7 @@ export const Navbar: React.FC = () => {
           <div className="flex items-center md:hidden">
             <button
               onClick={toggleMenu}
-              className="text-gray-600 hover:text-mw-blue focus:outline-none"
+              className="focus:outline-none transition-colors text-gray-600 hover:text-mw-blue"
             >
               {isOpen ? <X className="w-8 h-8" /> : <Menu className="w-8 h-8" />}
             </button>
@@ -82,34 +73,36 @@ export const Navbar: React.FC = () => {
       </div>
 
       {/* Mobile Menu */}
-      {isOpen && (
-        <div className="md:hidden bg-white border-b border-gray-200">
-          <div className="px-4 pt-2 pb-6 space-y-1 sm:px-3">
-            {navLinks.map((link) => (
-              <Link
-                key={link.path}
-                to={link.path}
-                onClick={() => setIsOpen(false)}
-                className={`block px-3 py-3 rounded-md text-base font-medium ${
-                  isActive(link.path)
-                    ? 'bg-orange-50 text-mw-orange'
-                    : 'text-gray-700 hover:bg-gray-50 hover:text-mw-blue'
-                }`}
-              >
-                {link.name}
-              </Link>
-            ))}
-            <a 
-              href={ESHOP_URL}
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="block w-full mt-4 text-center bg-mw-blue text-white px-3 py-3 rounded-md font-medium"
+      <div 
+        className={`md:hidden bg-white border-b border-gray-200 overflow-hidden transition-all duration-300 absolute w-full left-0 top-24 ${
+          isOpen ? 'max-h-96 opacity-100 shadow-xl' : 'max-h-0 opacity-0'
+        }`}
+      >
+        <div className="px-4 pt-2 pb-6 space-y-2 sm:px-3">
+          {navLinks.map((link) => (
+            <Link
+              key={link.path}
+              to={link.path}
+              onClick={() => setIsOpen(false)}
+              className={`block px-4 py-3 rounded-lg text-base font-bold transition-colors ${
+                isActive(link.path)
+                  ? 'bg-orange-50 text-mw-orange'
+                  : 'text-gray-700 hover:bg-gray-50 hover:text-mw-blue'
+              }`}
             >
-              Přejít na E-shop
-            </a>
-          </div>
+              {link.name}
+            </Link>
+          ))}
+          <a 
+            href={ESHOP_URL}
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="block w-full mt-6 text-center bg-mw-blue text-white px-4 py-3 rounded-lg font-bold hover:bg-mw-dark transition-colors"
+          >
+            Přejít na E-shop
+          </a>
         </div>
-      )}
+      </div>
     </nav>
   );
 };
