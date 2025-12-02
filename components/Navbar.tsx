@@ -22,10 +22,9 @@ export const Navbar: React.FC = () => {
     <nav className="fixed w-full top-0 z-50 bg-white border-b border-gray-200 shadow-sm h-24 md:h-20 transition-all">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full">
         <div className="flex justify-between items-center h-full">
-          {/* Logo Area */}
+          {/* Logo Area - Pouze obrázek */}
           <div className="flex-shrink-0 flex items-center pt-2 md:pt-0">
             <Link to="/" className="flex items-center gap-2 group">
-              {/* Pouze obrázkové logo. Soubor logo.png musí být nahrán v rootu projektu. */}
               <img 
                 src={LOGO_IMAGE_URL} 
                 alt="MICROWARE" 
